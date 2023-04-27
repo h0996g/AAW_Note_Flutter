@@ -29,17 +29,22 @@ class LoginCubit extends Cubit<LoginState> {
 
   void loginUser({required String email, required String password}) {
     emit(LodinLoginUserState());
-    EtudientModel _userModel = EtudientModel(email: email, password: password);
+    UserModel _userModel = UserModel(email: email, password: password);
     DioHelper.postData(url: LOGIN + pathLogin, data: _userModel.toMap())
         .then((value) {
       print('Dkhol');
       model = RegisterAndLoginModel.fromjson(value.data);
       print(model!.token);
-      // userModelList.add(UserModel.fromJson(value.data));
-      emit(LoginUserStateGood(model!.token));
+      pathLogin == 'Etudient'
+          ? emit(LoginEtudientStateGood(model!.token))
+          : pathLogin == 'Ensiengnant'
+              ? emit(LoginEnsiengnantStateGood(model!.token))
+              : pathLogin == "Responsable"
+                  ? emit(LoginResponsableStateGood(model!.token))
+                  : '';
     }).catchError((e) {
       print(e.toString());
-      emit(LoginUserStateBad(e.toString()));
+      emit(LoginResponsableStateBad(e.toString()));
     });
   }
 }

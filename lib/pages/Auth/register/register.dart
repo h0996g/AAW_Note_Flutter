@@ -1,12 +1,9 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
 
-import '../../../Home/cubit/home_cubit.dart';
 import '../../../shared/components/components.dart';
-import '../../../shared/components/constants.dart';
-import '../../../shared/helper/cashHelper.dart';
+
 import 'cubit/register_cubit.dart';
 
 class Register extends StatelessWidget {

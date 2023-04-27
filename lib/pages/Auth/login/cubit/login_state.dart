@@ -8,14 +8,38 @@ class ChangeIndexStateGood extends LoginState {}
 
 class LodinLoginUserState extends LoginState {}
 
-class LoginUserStateGood extends LoginState {
+class LoginResponsableStateGood extends LoginState {
   final token;
 
-  LoginUserStateGood(this.token);
+  LoginResponsableStateGood(this.token);
 }
 
-class LoginUserStateBad extends LoginState {
+class LoginResponsableStateBad extends LoginState {
   final err;
 
-  LoginUserStateBad(this.err);
+  LoginResponsableStateBad(this.err);
+}
+
+class LoginEnsiengnantStateGood extends LoginState {
+  final token;
+
+  LoginEnsiengnantStateGood(this.token);
+}
+
+class LoginEnsiengnantStateBad extends LoginState {
+  final err;
+
+  LoginEnsiengnantStateBad(this.err);
+}
+
+class LoginEtudientStateGood extends LoginState {
+  final token;
+
+  LoginEtudientStateGood(this.token);
+}
+
+class LoginEtudientStateBad extends LoginState {
+  final err;
+
+  LoginEtudientStateBad(this.err);
 }

@@ -1,3 +1,4 @@
+import 'package:affichage/pages/Home/HomeResponsable.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 
@@ -5,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../shared/components/components.dart';
 
-import '../../Home.dart';
 import '../register/register.dart';
 import 'cubit/login_cubit.dart';
 import 'cubit/login_state.dart';
@@ -154,7 +154,7 @@ class Login extends StatelessWidget {
         );
       },
       listener: (BuildContext context, Object? state) {
-        if (state is LoginUserStateGood) {
+        if (state is LoginResponsableStateGood) {
           showToast(msg: "Logged in Successfully", state: ToastStates.success);
           // sleep(const Duration(seconds: 1));
           // CachHelper.putcache(key: "token", value: state.token).then((value) {
@@ -165,8 +165,8 @@ class Login extends StatelessWidget {
           //   HomeCubit.get(context).getCurrentUserInfo();
           //   HomeCubit.get(context).getOtherUsers();
           // });
-          navigatAndFinish(context: context, page: const Home());
-        } else if (state is LoginUserStateBad) {
+          navigatAndFinish(context: context, page: const HomeResponsable());
+        } else if (state is LoginResponsableStateBad) {
           showToast(msg: 'Something Went Wrong', state: ToastStates.error);
         }
       },

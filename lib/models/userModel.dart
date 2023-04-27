@@ -1,13 +1,13 @@
-class EtudientModel {
+class UserModel {
   String? id;
   String? name;
   String? email;
   String? password;
   String? phone;
   String? image;
-  EtudientModel(
+  UserModel(
       {this.id, this.name, this.email, this.password, this.phone, this.image});
-  EtudientModel.fromJson(Map<String, dynamic> json) {
+  UserModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     id = json['_id'];
     email = json['email'];
