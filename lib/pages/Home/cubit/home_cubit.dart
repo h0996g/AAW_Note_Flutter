@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../dio/dioHalper.dart';
+import '../../../models/EtudientDetailsWithNote.dart';
 import '../../../models/userModel.dart';
 import '../../../shared/components/constants.dart';
 
@@ -14,7 +15,7 @@ class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitial());
   static HomeCubit get(context) => BlocProvider.of(context);
   List<UserModel>? etudiantModelList;
-
+  EtudientDetailsWithNote? etudiantModel;
   int currentIndex = 0;
   List<Widget> userScreen = [
     const Reclamation(),
@@ -64,6 +65,24 @@ class HomeCubit extends Cubit<HomeState> {
     }).catchError((e) {
       print(e.toString());
       emit(DeleteEtudiantStateBad(e.toString()));
+    });
+  }
+
+// info Etudiant
+  void getEtudiantDetail({required String id}) {
+    emit(LodinGetUserDetailState());
+
+    DioHelper.getData(
+      url: GETUSERDETAIL + id.toString(),
+    ).then((value) {
+      print('dkhol l detail');
+      // print(value);
+      etudiantModel = EtudientDetailsWithNote.fromJson(value.data);
+      print(etudiantModel!.data!.email);
+      emit(GetUserDetailStateGood());
+    }).catchError((e) {
+      print(e.toString());
+      emit(GetUserDetailStateBad(e.toString()));
     });
   }
 }

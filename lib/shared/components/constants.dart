@@ -4,7 +4,7 @@ Map<String, dynamic> DECODEDTOKEN = {};
 
 const GETAllETUDIANTS = '/AllEtudiants';
 
-const GETUSERDETAIL = '/users/';
+const GETUSERDETAIL = '/getEtudiantInfo/';
 const REGISTERUSER = '/register';
 const LOGIN = '/login';
 const DELETEETUDIENT = '/deleteEtudiant/';

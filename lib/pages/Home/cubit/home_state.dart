@@ -26,3 +26,13 @@ class DeleteEtudiantStateBad extends HomeState {
 
   DeleteEtudiantStateBad(this.e);
 }
+
+class LodinGetUserDetailState extends HomeState {}
+
+class GetUserDetailStateGood extends HomeState {}
+
+class GetUserDetailStateBad extends HomeState {
+  final e;
+
+  GetUserDetailStateBad(this.e);
+}

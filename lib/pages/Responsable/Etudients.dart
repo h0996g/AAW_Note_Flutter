@@ -1,9 +1,11 @@
+import 'package:affichage/pages/Responsable/EtudiantProfile.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../models/userModel.dart';
 // import '../../shared/components/components.dart';
+import '../../shared/components/components.dart';
 import '../Home/cubit/home_cubit.dart';
 
 class Etudiants extends StatelessWidget {
@@ -85,11 +87,11 @@ Widget defaultTask(context, UserModel model, int id) => Card(
       margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       child: ListTile(
         onTap: () {
-          // navigatAndReturn(
-          //     context: context,
-          //     page: UserDetail(
-          //       model: model,
-          //     ));
+          navigatAndReturn(
+              context: context,
+              page: EtudiantProfile(
+                model: model,
+              ));
         },
         onLongPress: () {
           showDialog(
