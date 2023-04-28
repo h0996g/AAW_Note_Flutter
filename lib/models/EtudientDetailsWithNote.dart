@@ -4,22 +4,24 @@ class EtudientDetailsWithNote {
   // bool? status;
 
   // !mb3d nrghom double
-  int? math;
-  int? physique;
-  int? algo;
-  int? moy;
+  var math;
+  var physique;
+  var algo;
+  var moy;
   String? id;
 
   UserModel? data;
 
-  EtudientDetailsWithNote(
-      {this.data,
-      this.algo,
-      this.math,
-      this.physique,
-      // this.status,
-      this.id,
-      this.moy});
+  EtudientDetailsWithNote({
+    this.data,
+    this.algo,
+    this.math,
+    this.physique,
+
+    // this.status,
+    this.id,
+    this.moy,
+  });
   EtudientDetailsWithNote.fromJson(Map<String, dynamic> json) {
     // status = json['status'];
     math = json['math'];
@@ -27,7 +29,11 @@ class EtudientDetailsWithNote {
     algo = json['algo'];
     id = json['_id'];
     moy = json['moy'];
-    data = UserModel.fromJson(json['userowner']);
+    data =
+        // json['userowner'] != null
+        // ?
+        UserModel.fromJson(json['userowner']);
+    // : null;
   }
 
   Map<String, dynamic> toMap() {

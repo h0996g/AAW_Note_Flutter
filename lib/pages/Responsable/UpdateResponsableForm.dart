@@ -42,7 +42,7 @@ class _UpdateResponsableFormState extends State<UpdateResponsableForm> {
     return BlocConsumer<HomeCubit, HomeState>(
       listener: (context, state) {
         // TODO: implement listener
-        if (state is UpdateUserStateGood) {
+        if (state is UpdateResponsableStateGood) {
           showToast(msg: 'Updated Successfully', state: ToastStates.success);
           HomeCubit.get(context).resetValueWheneUpdate();
 

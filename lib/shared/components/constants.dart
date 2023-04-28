@@ -6,8 +6,10 @@ const GETAllETUDIANTS = '/AllEtudiants';
 const GETRESPONSABLEDETAIL = 'GETRESPONSABLEDETAIL/';
 const UPDATERESPONSABLE = '/updateResponsable/';
 
+const UPDATEETUDIANTWITHRESPONSABLE = '/updateEtudiantWtithResponsable/';
+
 const GETUSERDETAIL = '/getEtudiantInfo/';
 const REGISTERUSER = '/register';
 const LOGIN = '/login';
 const DELETEETUDIENT = '/deleteEtudiant/';
-const UPDATEUSER = '/users/';
+const UPDATEUSER = '/updateuser/';

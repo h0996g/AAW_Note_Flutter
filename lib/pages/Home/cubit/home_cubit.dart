@@ -19,6 +19,7 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitial());
   static HomeCubit get(context) => BlocProvider.of(context);
+
   List<UserModel>? etudiantModelList;
   EtudientDetailsWithNote? etudiantModel;
   UserModel? responsableModel;
@@ -44,6 +45,10 @@ class HomeCubit extends Cubit<HomeState> {
   void resetValueWheneUpdate() {
     imageCompress = null;
     linkProfileImg = null;
+  }
+
+  void resetValueWheneSeeDetailEtudiant() {
+    etudiantModel = null;
   }
 
   changeButtonNav(int currentIndex) {
@@ -106,10 +111,10 @@ class HomeCubit extends Cubit<HomeState> {
   }
 
 // info Etudiant
-  void getEtudiantDetail({required String id}) {
+  Future<void> getEtudiantDetail({required String id}) async {
     emit(LodinGetUserDetailState());
 
-    DioHelper.getData(
+    await DioHelper.getData(
       url: GETUSERDETAIL + id.toString(),
     ).then((value) {
       print('dkhol l detail');
@@ -160,6 +165,7 @@ class HomeCubit extends Cubit<HomeState> {
     });
   }
 
+// update Responsable
   Future<void> updateResponsable(
       {required String id, required String name, required String email}) async {
     emit(LodinUpdateResponsableState());
@@ -179,6 +185,53 @@ class HomeCubit extends Cubit<HomeState> {
       print('badalt info user');
       responsableModel = UserModel.fromJson(value.data);
       getCurrentResponsableInfo();
+      emit(UpdateResponsableStateGood());
+    }).catchError((e) {
+      print(e.toString());
+      emit(UpdateResponsableStateBad(e.toString()));
+    });
+  }
+
+  // !--------------------------------------------
+
+// updateEtudiantResponsable
+  Future<void> updateEtudiantResponsable({
+    required String id,
+    required String name,
+    required String email,
+    String math = '',
+    String physique = '',
+    String algo = '',
+  }) async {
+    emit(LodinUpdateUserState());
+
+    if (imageCompress != null) {
+      await updateProfileImg();
+    }
+    UserModel _model = UserModel(
+      name: name,
+      email: email,
+      image: linkProfileImg ?? etudiantModel!.data!.image,
+    );
+
+    // EtudientDetailsWithNote _modelEtudient = EtudientDetailsWithNote(
+    //   data: _model,
+    // );
+
+    await DioHelper.putData(
+            url: UPDATEUSER + id.toString(), data: _model.toMap())
+        .then((value) async {
+      print('badalt info Etudiant');
+      print(value.data);
+      await getEtudiantDetail(id: id);
+
+      await updateEtudiantNote(
+        algo: algo,
+        id: id,
+        math: math,
+        physique: physique,
+      );
+      // getCurrentResponsableInfo();
       emit(UpdateUserStateGood());
     }).catchError((e) {
       print(e.toString());
@@ -186,5 +239,33 @@ class HomeCubit extends Cubit<HomeState> {
     });
   }
 
-  // !--------------------------------------------
+// updateEtudiantNote
+  Future<void> updateEtudiantNote({
+    required String id,
+    // required String name,
+    // required String email,
+    required String math,
+    required String algo,
+    required String physique,
+  }) async {
+    emit(LodinUpdateUserNoteState());
+
+    EtudientDetailsWithNote _modelEtudient = EtudientDetailsWithNote(
+      algo: algo,
+      math: math,
+      physique: physique,
+    ); //! bh nbdl Note
+
+    await DioHelper.putData(
+            url: UPDATEETUDIANTWITHRESPONSABLE + id.toString(),
+            data: _modelEtudient.toMap())
+        .then((value) async {
+      print('badalt note Etudiant');
+      await getEtudiantDetail(id: id);
+      emit(UpdateUserNoteStateGood());
+    }).catchError((e) {
+      print(e.toString());
+      emit(UpdateUserNoteStateBad(e.toString()));
+    });
+  }
 }

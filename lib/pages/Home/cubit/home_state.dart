@@ -67,6 +67,26 @@ class UploadProfileResponsableImgAndGetUrlStateBad extends HomeState {}
 
 // class LodinUpdateUserState extends HomeState {}
 
+class UpdateResponsableStateGood extends HomeState {}
+
+class UpdateResponsableStateBad extends HomeState {
+  final err;
+
+  UpdateResponsableStateBad(this.err);
+}
+
+class LodinUpdateUserNoteState extends HomeState {}
+
+class UpdateUserNoteStateGood extends HomeState {}
+
+class UpdateUserNoteStateBad extends HomeState {
+  final err;
+
+  UpdateUserNoteStateBad(this.err);
+}
+
+class LodinUpdateUserState extends HomeState {}
+
 class UpdateUserStateGood extends HomeState {}
 
 class UpdateUserStateBad extends HomeState {
