@@ -36,3 +36,41 @@ class GetUserDetailStateBad extends HomeState {
 
   GetUserDetailStateBad(this.e);
 }
+
+class LodinGetCurrentResponsableDetailState extends HomeState {}
+
+class GetCurrentResponsableDetailStateGood extends HomeState {}
+
+class GetCurrentResponsableDetailStateBad extends HomeState {
+  final e;
+
+  GetCurrentResponsableDetailStateBad(this.e);
+}
+
+class LodinUpdateResponsableState extends HomeState {}
+
+// class GetCurrentResponsableDetailStateGood extends HomeState {}
+
+// class GetCurrentResponsableDetailStateBad extends HomeState {
+//   final e;
+
+//   GetCurrentResponsableDetailStateBad(this.e);
+// }
+
+class ImagePickerProfileResponsableStateGood extends HomeState {}
+
+class ImagePickerProfileResponsableStateBad extends HomeState {}
+
+class UploadProfileResponsableImgAndGetUrlStateGood extends HomeState {}
+
+class UploadProfileResponsableImgAndGetUrlStateBad extends HomeState {}
+
+// class LodinUpdateUserState extends HomeState {}
+
+class UpdateUserStateGood extends HomeState {}
+
+class UpdateUserStateBad extends HomeState {
+  final err;
+
+  UpdateUserStateBad(this.err);
+}

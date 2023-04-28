@@ -50,7 +50,7 @@ class _EtudiantProfileState extends State<EtudiantProfile> {
               child: Center(
                 child: ConditionalBuilder(
                   builder: (BuildContext context) {
-                    return Container(
+                    return SizedBox(
                       height: size.height -
                           defaultAppBar().preferredSize.height * 2.5,
                       // padding: EdgeInsets.all(16.0),

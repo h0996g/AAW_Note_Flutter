@@ -1,13 +1,18 @@
+import 'dart:io';
+
 import 'package:affichage/pages/Responsable/Etudients.dart';
 import 'package:affichage/pages/Responsable/Reclamation.dart';
 import 'package:affichage/pages/Responsable/profile.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../dio/dioHalper.dart';
 import '../../../models/EtudientDetailsWithNote.dart';
 import '../../../models/userModel.dart';
 import '../../../shared/components/constants.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 part 'home_state.dart';
 
@@ -16,20 +21,52 @@ class HomeCubit extends Cubit<HomeState> {
   static HomeCubit get(context) => BlocProvider.of(context);
   List<UserModel>? etudiantModelList;
   EtudientDetailsWithNote? etudiantModel;
+  UserModel? responsableModel;
   int currentIndex = 0;
   List<Widget> userScreen = [
     const Reclamation(),
     Etudiants(),
-    const ProfileResponsable(),
+    ProfileResponsable(),
   ];
   List<String> appbarScreen = const [
     'Reclamation',
     'Etudiants',
     'Profile',
   ];
+
+  void resetValueWhenelogout() {
+    currentIndex = 0;
+    etudiantModelList = null;
+    etudiantModel = null;
+    responsableModel = null;
+  }
+
+  void resetValueWheneUpdate() {
+    imageCompress = null;
+    linkProfileImg = null;
+  }
+
   changeButtonNav(int currentIndex) {
     this.currentIndex = currentIndex;
     emit(ChangeButtonNavStateGood());
+  }
+
+// get Responsable
+  Future<void> getCurrentResponsableInfo() async {
+    emit(LodinGetCurrentResponsableDetailState());
+
+    await DioHelper.getData(
+      url: GETRESPONSABLEDETAIL + DECODEDTOKEN['_id'].toString(),
+    ).then((value) {
+      print('current user');
+      // print(DECODEDTOKEN['_id'].toString());
+      responsableModel = UserModel.fromJson(value.data);
+      print(responsableModel!.name);
+      emit(GetCurrentResponsableDetailStateGood());
+    }).catchError((e) {
+      print(e.toString());
+      emit(GetCurrentResponsableDetailStateBad(e.toString()));
+    });
   }
 
 //  get Etudients
@@ -85,4 +122,69 @@ class HomeCubit extends Cubit<HomeState> {
       emit(GetUserDetailStateBad(e.toString()));
     });
   }
+
+// !--------imagepicker with Compress
+  // XFile? imageProfile;
+  File? imageCompress;
+  Future<void> imagePickerProfile(ImageSource source) async {
+    final ImagePicker _pickerProfile = ImagePicker();
+    await _pickerProfile.pickImage(source: source).then((value) async {
+      // imageProfile = value;
+      await FlutterImageCompress.compressAndGetFile(
+        File(value!.path).absolute.path,
+        File(value.path).path + '.jpg',
+        quality: 10,
+      ).then((value) {
+        imageCompress = value;
+        emit(ImagePickerProfileResponsableStateGood());
+      });
+    }).catchError((e) {
+      emit(ImagePickerProfileResponsableStateBad());
+    });
+  }
+
+  String? linkProfileImg;
+  Future<void> updateProfileImg() async {
+    await firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('users/${Uri.file(imageCompress!.path).pathSegments.last}')
+        .putFile(imageCompress!)
+        .then((p0) async {
+      await p0.ref.getDownloadURL().then((value) {
+        linkProfileImg = value;
+        print(linkProfileImg);
+        // emit(UploadProfileImgAndGetUrlStateGood());  //! bah matro7ch  LodingUpdateUserStateGood() t3 Widget LinearProgressIndicator
+      }).catchError((e) {
+        emit(UploadProfileResponsableImgAndGetUrlStateBad());
+      });
+    });
+  }
+
+  Future<void> updateResponsable(
+      {required String id, required String name, required String email}) async {
+    emit(LodinUpdateResponsableState());
+
+    if (imageCompress != null) {
+      await updateProfileImg();
+    }
+    UserModel _model = UserModel(
+      name: name,
+      email: email,
+      image: linkProfileImg ?? responsableModel!.image,
+    );
+
+    await DioHelper.putData(
+            url: UPDATERESPONSABLE + id.toString(), data: _model.toMap())
+        .then((value) {
+      print('badalt info user');
+      responsableModel = UserModel.fromJson(value.data);
+      getCurrentResponsableInfo();
+      emit(UpdateUserStateGood());
+    }).catchError((e) {
+      print(e.toString());
+      emit(UpdateUserStateBad(e.toString()));
+    });
+  }
+
+  // !--------------------------------------------
 }

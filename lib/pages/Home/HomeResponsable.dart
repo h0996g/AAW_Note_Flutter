@@ -1,8 +1,12 @@
+import 'package:affichage/pages/Auth/login/login.dart';
 import 'package:affichage/pages/Home/cubit/home_cubit.dart';
+import 'package:affichage/shared/components/components.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../shared/helper/cashHelper.dart';
 
 // import '../Home/cubit/home_cubit.dart';
 
@@ -15,6 +19,11 @@ class HomeResponsable extends StatelessWidget {
     return BlocConsumer<HomeCubit, HomeState>(
       builder: (BuildContext context, state) {
         return Scaffold(
+          // floatingActionButton: FloatingActionButton(onPressed: () {
+          //   CachHelper.removdata(key: "token");
+          //   navigatAndFinish(context: context, page: Login());
+          // }),
+
           bottomNavigationBar: BottomNavigationBar(
             // type: BottomNavigationBarType.fixed,
             onTap: (index) {

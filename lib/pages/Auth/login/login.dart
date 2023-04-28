@@ -3,9 +3,13 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 import '../../../shared/components/components.dart';
 
+import '../../../shared/components/constants.dart';
+import '../../../shared/helper/cashHelper.dart';
+import '../../Home/cubit/home_cubit.dart';
 import '../register/register.dart';
 import 'cubit/login_cubit.dart';
 import 'cubit/login_state.dart';
@@ -157,14 +161,14 @@ class Login extends StatelessWidget {
         if (state is LoginResponsableStateGood) {
           showToast(msg: "Logged in Successfully", state: ToastStates.success);
           // sleep(const Duration(seconds: 1));
-          // CachHelper.putcache(key: "token", value: state.token).then((value) {
-          //   print(value.toString());
-          //   TOKEN = CachHelper.getData(key: 'token');
-          //   DECODEDTOKEN = JwtDecoder.decode(state.token);
-          //   print(DECODEDTOKEN['_id']);
-          //   HomeCubit.get(context).getCurrentUserInfo();
-          //   HomeCubit.get(context).getOtherUsers();
-          // });
+          CachHelper.putcache(key: "token", value: state.token).then((value) {
+            print(value.toString());
+            TOKEN = CachHelper.getData(key: 'token');
+            DECODEDTOKEN = JwtDecoder.decode(state.token);
+            print(DECODEDTOKEN['_id']);
+            HomeCubit.get(context).getCurrentResponsableInfo();
+            HomeCubit.get(context).getEtudiants();
+          });
           navigatAndFinish(context: context, page: const HomeResponsable());
         } else if (state is LoginResponsableStateBad) {
           showToast(msg: 'Something Went Wrong', state: ToastStates.error);

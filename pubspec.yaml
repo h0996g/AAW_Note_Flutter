@@ -43,9 +43,9 @@ dependencies:
   http: ^0.13.5
   shared_preferences: ^2.0.20
   jwt_decoder: ^2.0.1
-  # firebase_core: ^2.10.0
-  # cloud_firestore: ^4.4.5
-  # firebase_storage: ^11.0.16
+  firebase_core: ^2.10.0
+  cloud_firestore: ^4.4.5
+  firebase_storage: ^11.0.16
   image_picker: ^0.8.7+3
   flutter_image_compress: ^1.1.3
 
