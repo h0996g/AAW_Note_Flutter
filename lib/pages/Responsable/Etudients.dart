@@ -32,7 +32,8 @@ class Etudiants extends StatelessWidget {
               },
               child: HomeCubit.get(context).etudiantModelList!.isNotEmpty
                   ? ListView.builder(
-                      physics: const AlwaysScrollableScrollPhysics(),
+                      physics: const AlwaysScrollableScrollPhysics(
+                          parent: BouncingScrollPhysics()),
                       itemBuilder: (context, index) => defaultTask(
                           context,
                           HomeCubit.get(context).etudiantModelList![index],

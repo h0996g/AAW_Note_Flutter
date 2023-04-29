@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:affichage/models/reclamationModel.dart';
 import 'package:affichage/pages/Responsable/Etudients.dart';
 import 'package:affichage/pages/Responsable/Reclamation.dart';
 import 'package:affichage/pages/Responsable/profile.dart';
@@ -19,13 +20,16 @@ part 'home_state.dart';
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit() : super(HomeInitial());
   static HomeCubit get(context) => BlocProvider.of(context);
-
+  bool? isDone;
+  bool iswriteComment = false;
   List<UserModel>? etudiantModelList;
   EtudientDetailsWithNote? etudiantModel;
+  List<ReclamationModel>? reclamationModelList;
+  ReclamationModel? reclamationModel;
   UserModel? responsableModel;
   int currentIndex = 0;
   List<Widget> userScreen = [
-    const Reclamation(),
+    Reclamation(),
     Etudiants(),
     ProfileResponsable(),
   ];
@@ -34,6 +38,10 @@ class HomeCubit extends Cubit<HomeState> {
     'Etudiants',
     'Profile',
   ];
+  void changeStateDone(bool state) {
+    isDone = state;
+    emit(ChangeStatDoneStateGood());
+  }
 
   void resetValueWhenelogout() {
     currentIndex = 0;
@@ -54,6 +62,11 @@ class HomeCubit extends Cubit<HomeState> {
   changeButtonNav(int currentIndex) {
     this.currentIndex = currentIndex;
     emit(ChangeButtonNavStateGood());
+  }
+
+  void writeComment(bool state) {
+    iswriteComment = state;
+    emit(ChangeAnimatCommentStateGood());
   }
 
 // get Responsable
@@ -266,6 +279,58 @@ class HomeCubit extends Cubit<HomeState> {
     }).catchError((e) {
       print(e.toString());
       emit(UpdateUserNoteStateBad(e.toString()));
+    });
+  }
+
+  Future<void> getAllReclamation() async {
+    emit(LodinGetAllReclamationState());
+    await DioHelper.getData(url: GETALLRECLAMATION).then((value) {
+      print('jabt Reclamation kml');
+      reclamationModelList =
+          []; //! bh y9der ydirl.ha add (ni chare7 3lh drt.ha Null fl commit t3 AAW_Flutter)
+      for (var element in value.data) {
+        reclamationModelList!.add(ReclamationModel.fromJson(element));
+      }
+      // print(reclamationModelList![0].text);
+      emit(GetAllReclamationStateGood());
+    }).catchError((e) {
+      print(e.toString());
+      emit(GetAllReclamationStateBad(e.toString()));
+    });
+  }
+
+  Future<void> updatereclamation({
+    required bool isdone,
+    String? id,
+  }) async {
+    emit(LodinUpdateReclamationState());
+
+    await DioHelper.putData(
+        url: UPDATERECLAMATION + id.toString(),
+        data: {"done": isdone}).then((value) {
+      print('badalt Reclamation');
+      getAllReclamation();
+
+      emit(UpdateReclamationStateGood());
+    }).catchError((e) {
+      print(e.toString());
+      emit(UpdateReclamationStateBad(e.toString()));
+    });
+  }
+
+  deleteReclamation({required String id}) {
+    emit(LodinDeleteReclamationState());
+
+    DioHelper.deleteData(
+      url: DELETERECLAMATION + id.toString(),
+    ).then((value) {
+      print('na7a Reclamation');
+
+      getAllReclamation();
+      emit(DeleteReclamationStateGood());
+    }).catchError((e) {
+      print(e.toString());
+      emit(DeleteReclamationStateBad(e.toString()));
     });
   }
 }

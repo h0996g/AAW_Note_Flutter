@@ -1,6 +1,5 @@
 import 'package:affichage/pages/Home/HomeResponsable.dart';
 import 'package:affichage/pages/Responsable/EditeEtudiantProfile.dart';
-import 'package:affichage/pages/Responsable/Etudients.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 
@@ -38,6 +37,10 @@ class _EtudiantProfileState extends State<EtudiantProfile> {
         {
           'module': 'physique',
           'note': HomeCubit.get(context).etudiantModel!.physique.toString()
+        },
+        {
+          'module': 'moy',
+          'note': HomeCubit.get(context).etudiantModel!.moy.toString()
         },
       ];
     });

@@ -168,6 +168,7 @@ class Login extends StatelessWidget {
             print(DECODEDTOKEN['_id']);
             HomeCubit.get(context).getCurrentResponsableInfo();
             HomeCubit.get(context).getEtudiants();
+            HomeCubit.get(context).getAllReclamation();
           });
           navigatAndFinish(context: context, page: const HomeResponsable());
         } else if (state is LoginResponsableStateBad) {

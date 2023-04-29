@@ -54,6 +54,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(
             lazy: false,
             create: ((context) => HomeCubit()
+              ..getAllReclamation()
               ..getCurrentResponsableInfo()
               ..getEtudiants())),
       ],

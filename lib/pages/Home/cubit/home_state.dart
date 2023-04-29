@@ -7,6 +7,10 @@ class HomeInitial extends HomeState {}
 
 class ChangeButtonNavStateGood extends HomeState {}
 
+class ChangeStatDoneStateGood extends HomeState {}
+
+class ChangeAnimatCommentStateGood extends HomeState {}
+
 class LodinGetEtudiantsState extends HomeState {}
 
 class GetOtherEtudiantsStateGood extends HomeState {}
@@ -17,6 +21,16 @@ class GetOtherEtudiantsStateBad extends HomeState {
   GetOtherEtudiantsStateBad(this.e);
 }
 
+class LodinGetAllReclamationState extends HomeState {}
+
+class GetAllReclamationStateGood extends HomeState {}
+
+class GetAllReclamationStateBad extends HomeState {
+  final e;
+
+  GetAllReclamationStateBad(this.e);
+}
+
 class LodinDeleteEtudiantState extends HomeState {}
 
 class DeleteEtudiantStateGood extends HomeState {}
@@ -25,6 +39,16 @@ class DeleteEtudiantStateBad extends HomeState {
   final e;
 
   DeleteEtudiantStateBad(this.e);
+}
+
+class LodinDeleteReclamationState extends HomeState {}
+
+class DeleteReclamationStateGood extends HomeState {}
+
+class DeleteReclamationStateBad extends HomeState {
+  final e;
+
+  DeleteReclamationStateBad(this.e);
 }
 
 class LodinGetUserDetailState extends HomeState {}
@@ -93,4 +117,14 @@ class UpdateUserStateBad extends HomeState {
   final err;
 
   UpdateUserStateBad(this.err);
+}
+
+class LodinUpdateReclamationState extends HomeState {}
+
+class UpdateReclamationStateGood extends HomeState {}
+
+class UpdateReclamationStateBad extends HomeState {
+  final err;
+
+  UpdateReclamationStateBad(this.err);
 }
