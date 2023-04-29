@@ -1,3 +1,4 @@
+import 'package:affichage/pages/Auth/register/register.dart';
 import 'package:affichage/pages/Responsable/EtudiantProfile.dart';
 import 'package:flutter/material.dart';
 
@@ -6,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../models/userModel.dart';
 // import '../../shared/components/components.dart';
 import '../../shared/components/components.dart';
-import '../Home/cubit/home_cubit.dart';
+import '../HomeResponsable/cubit/home_cubit.dart';
 
 class Etudiants extends StatelessWidget {
   @override
@@ -15,6 +16,14 @@ class Etudiants extends StatelessWidget {
     return BlocConsumer<HomeCubit, HomeState>(
       builder: (BuildContext context, state) {
         return Scaffold(
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              navigatAndReturn(context: context, page: Register());
+            },
+            child: const Icon(
+              Icons.add,
+            ),
+          ),
           // floatingActionButton: defaultSubmit1(
           //   background: Colors.orangeAccent,
           //   onPressed: () {
@@ -71,9 +80,10 @@ class Etudiants extends StatelessWidget {
         );
       },
       listener: (BuildContext context, Object? state) async {
-        // if (state is DeleteUserStateGood) {
-        //   showToast(msg: 'Deleted Successfully', state: ToastStates.success);
-
+        if (state is DeleteEtudiantStateGood) {
+          showToast(msg: 'Deleted Successfully', state: ToastStates.success);
+          // navigatAndFinish(context: context, page: const HomeResponsable());
+        }
         //   Navigator.pop(context); //! hadi t3 showdialog
         // } else if (state is DeleteUserStateBad) {
         //   showToast(msg: "Something Went Wrong", state: ToastStates.error);

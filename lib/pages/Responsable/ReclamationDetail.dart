@@ -1,10 +1,10 @@
-import 'package:affichage/pages/Home/HomeResponsable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import '../../shared/components/components.dart';
-import '../Home/cubit/home_cubit.dart';
+import '../HomeResponsable/HomeResponsable.dart';
+import '../HomeResponsable/cubit/home_cubit.dart';
 
 class ReclamationDetails extends StatelessWidget {
   final int index;

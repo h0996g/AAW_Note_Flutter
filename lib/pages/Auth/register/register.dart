@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../shared/components/components.dart';
 
-import 'cubit/register_cubit.dart';
+import '../../HomeResponsable/HomeResponsable.dart';
+import '../../HomeResponsable/cubit/home_cubit.dart';
+import '../../Responsable/cubit/register_cubit.dart';
 
 class Register extends StatelessWidget {
   Register({Key? key}) : super(key: key);
@@ -34,7 +36,7 @@ class Register extends StatelessWidget {
                         height: size.height * 0.2,
                       ),
                       const Text(
-                        "Register",
+                        "Add Etudiant",
                         style: TextStyle(
                             fontSize: 40, fontWeight: FontWeight.bold),
                       ),
@@ -107,44 +109,29 @@ class Register extends StatelessWidget {
                       const SizedBox(
                         height: 20,
                       ),
-                      Row(
-                        children: [
-                          const Text('Have an account'),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          TextButton(
-                            child: const Text(
-                              'Login',
-                              style: TextStyle(color: Colors.blue),
-                            ),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                          ),
-                          const Spacer(),
-                          ConditionalBuilder(
-                            builder: (BuildContext context) {
-                              return defaultSubmit1(
-                                  formKey: formKey,
-                                  onPressed: () {
-                                    if (formKey.currentState!.validate()) {
-                                      // RegisterCubit.get(context).registerUser(
-                                      //     name: nameController.text,
-                                      //     email: emailController.text,
-                                      //     phone: phoneController.text,
-                                      //     password: passwordController.text);
-                                    }
-                                  });
-                            },
-                            condition: state is! LodinRegisterUserState,
-                            fallback: (BuildContext context) {
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            },
-                          ),
-                        ],
+                      Align(
+                        alignment: Alignment.bottomRight,
+                        child: ConditionalBuilder(
+                          builder: (BuildContext context) {
+                            return defaultSubmit1(
+                                formKey: formKey,
+                                onPressed: () {
+                                  if (formKey.currentState!.validate()) {
+                                    RegisterCubit.get(context).registerUser(
+                                        name: nameController.text,
+                                        email: emailController.text,
+                                        phone: phoneController.text,
+                                        password: passwordController.text);
+                                  }
+                                });
+                          },
+                          condition: state is! LodinRegisterUserState,
+                          fallback: (BuildContext context) {
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                        ),
                       )
                     ]),
               ),
@@ -153,17 +140,12 @@ class Register extends StatelessWidget {
         );
       },
       listener: (BuildContext context, Object? state) {
-        // if (state is RegisterUserStateGood) {
-        //   showToast(msg: "Succesffuly Registered", state: ToastStates.success);
-        //   // sleep(const Duration(seconds: 1));
-        //   CachHelper.putcache(key: 'token', value: state.token)
-        //       .then((value) async {
-        //     TOKEN = await CachHelper.getData(key: 'token');
-        //     DECODEDTOKEN = JwtDecoder.decode(state.token);
-        //     HomeCubit.get(context).getCurrentUserInfo();
-        //     HomeCubit.get(context).getOtherUsers();
-        //     navigatAndFinish(context: context, page: const Home());
-        //   });
+        if (state is RegisterUserStateGood) {
+          showToast(msg: "Succesffuly Registered", state: ToastStates.success);
+          HomeCubit.get(context).getEtudiants().then((value) {
+            navigatAndFinish(context: context, page: HomeResponsable());
+          });
+        }
         // } else if (state is RegisterUserStateBad) {
         //   showToast(msg: 'Something Went Wrong', state: ToastStates.error);
         // }

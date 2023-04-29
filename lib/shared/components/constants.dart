@@ -11,7 +11,7 @@ const UPDATERECLAMATION = '/updateReclamation/';
 const UPDATEETUDIANTWITHRESPONSABLE = '/updateEtudiantWtithResponsable/';
 
 const GETUSERDETAIL = '/getEtudiantInfo/';
-const REGISTERUSER = '/register';
+const REGISTERETUDIANT = '/registerEtudient';
 const LOGIN = '/login';
 const DELETEETUDIENT = '/deleteEtudiant/';
 const DELETERECLAMATION = '/deleteReclamation/';

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../shared/components/components.dart';
-import '../Home/cubit/home_cubit.dart';
+import '../HomeResponsable/cubit/home_cubit.dart';
 import 'ReclamationDetail.dart';
 
 class Reclamation extends StatelessWidget {

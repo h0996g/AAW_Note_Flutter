@@ -9,9 +9,7 @@ class ShowPasswordState extends RegisterState {}
 class LodinRegisterUserState extends RegisterState {}
 
 class RegisterUserStateGood extends RegisterState {
-  final token;
-
-  RegisterUserStateGood(this.token);
+  RegisterUserStateGood();
 }
 
 class RegisterUserStateBad extends RegisterState {

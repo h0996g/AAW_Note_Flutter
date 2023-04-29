@@ -1,4 +1,3 @@
-import 'package:affichage/pages/Home/HomeResponsable.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 
@@ -9,7 +8,8 @@ import '../../../shared/components/components.dart';
 
 import '../../../shared/components/constants.dart';
 import '../../../shared/helper/cashHelper.dart';
-import '../../Home/cubit/home_cubit.dart';
+import '../../HomeResponsable/HomeResponsable.dart';
+import '../../HomeResponsable/cubit/home_cubit.dart';
 import '../register/register.dart';
 import 'cubit/login_cubit.dart';
 import 'cubit/login_state.dart';

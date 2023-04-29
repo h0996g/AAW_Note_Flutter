@@ -1,8 +1,9 @@
 import 'package:affichage/pages/Auth/login/cubit/login_cubit.dart';
 import 'package:affichage/pages/Auth/login/login.dart';
-import 'package:affichage/pages/Auth/register/cubit/register_cubit.dart';
-import 'package:affichage/pages/Home/HomeResponsable.dart';
-import 'package:affichage/pages/Home/cubit/home_cubit.dart';
+import 'package:affichage/pages/HomeResponsable/HomeResponsable.dart';
+import 'package:affichage/pages/HomeResponsable/cubit/home_cubit.dart';
+import 'package:affichage/pages/Responsable/cubit/register_cubit.dart';
+
 import 'package:affichage/shared/blocObserver/observer.dart';
 import 'package:affichage/shared/components/constants.dart';
 import 'package:affichage/shared/helper/cashHelper.dart';

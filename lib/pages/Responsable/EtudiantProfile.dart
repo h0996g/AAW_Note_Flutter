@@ -1,4 +1,3 @@
-import 'package:affichage/pages/Home/HomeResponsable.dart';
 import 'package:affichage/pages/Responsable/EditeEtudiantProfile.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
@@ -7,7 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../models/userModel.dart';
 import '../../shared/components/components.dart';
-import '../Home/cubit/home_cubit.dart';
+import '../HomeResponsable/HomeResponsable.dart';
+import '../HomeResponsable/cubit/home_cubit.dart';
 
 class EtudiantProfile extends StatefulWidget {
   final UserModel model;
@@ -58,7 +58,7 @@ class _EtudiantProfileState extends State<EtudiantProfile> {
         if (state is DeleteEtudiantStateGood) {
           showToast(msg: 'Deleted Successfully', state: ToastStates.success);
 
-          Navigator.pop(context); //! hadi t3 showdialog
+          navigatAndFinish(context: context, page: HomeResponsable());
         }
       },
       builder: (context, state) {

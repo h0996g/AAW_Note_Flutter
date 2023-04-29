@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../shared/components/components.dart';
 import '../../shared/helper/cashHelper.dart';
 import '../Auth/login/login.dart';
-import '../Home/cubit/home_cubit.dart';
+import '../HomeResponsable/cubit/home_cubit.dart';
 import 'UpdateResponsableForm.dart';
 
 class ProfileResponsable extends StatelessWidget {

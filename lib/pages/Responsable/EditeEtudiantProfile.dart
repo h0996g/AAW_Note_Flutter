@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../shared/components/components.dart';
-import '../Home/cubit/home_cubit.dart';
+import '../HomeResponsable/cubit/home_cubit.dart';
 
 class EditeEtudiantProfile extends StatefulWidget {
   // final UserModel model;
