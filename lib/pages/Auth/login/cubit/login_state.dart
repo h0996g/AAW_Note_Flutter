@@ -32,10 +32,10 @@ class LoginEnsiengnantStateBad extends LoginState {
   LoginEnsiengnantStateBad(this.err);
 }
 
-class LoginEtudientStateGood extends LoginState {
+class LoginEtudiantStateGood extends LoginState {
   final token;
 
-  LoginEtudientStateGood(this.token);
+  LoginEtudiantStateGood(this.token);
 }
 
 class LoginEtudientStateBad extends LoginState {

@@ -1,5 +1,7 @@
 import 'package:affichage/pages/Auth/login/cubit/login_cubit.dart';
 import 'package:affichage/pages/Auth/login/login.dart';
+import 'package:affichage/pages/HomeEtudiant/HomeEtudiant.dart';
+import 'package:affichage/pages/HomeEtudiant/cubit/etudiant_cubit.dart';
 import 'package:affichage/pages/HomeResponsable/HomeResponsable.dart';
 import 'package:affichage/pages/HomeResponsable/cubit/home_cubit.dart';
 import 'package:affichage/pages/Responsable/cubit/register_cubit.dart';
@@ -25,13 +27,20 @@ Future<void> main() async {
   DioHelper.init();
   Widget startWidget;
   TOKEN = await CachHelper.getData(key: 'token') ?? '';
+  LOGINTYPE = await CachHelper.getData(key: 'loginType') ?? '';
   // CachHelper.removdata(key: "token");
   if (TOKEN != '') {
     DECODEDTOKEN = JwtDecoder.decode(TOKEN);
     print(DECODEDTOKEN['_id']);
   }
   if (TOKEN != '') {
-    startWidget = const HomeResponsable();
+    if (LOGINTYPE == 'Etudiant') {
+      startWidget = const HomeEtudiant();
+    } else if (LOGINTYPE == 'Responsable') {
+      startWidget = const HomeResponsable();
+    } else {
+      startWidget = Login();
+    }
   } else {
     startWidget = Login();
   }
@@ -51,6 +60,11 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: ((context) => RegisterCubit())),
+        BlocProvider(
+            lazy: false,
+            create: ((context) => EtudiantCubit()
+              ..getCurrentEtudiantInfo()
+              ..getAllReclamationById())),
         BlocProvider(create: ((context) => LoginCubit())),
         BlocProvider(
             lazy: false,

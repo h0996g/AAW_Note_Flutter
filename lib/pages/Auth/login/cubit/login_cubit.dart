@@ -13,8 +13,8 @@ class LoginCubit extends Cubit<LoginState> {
   int selectedIndex = 0;
   RegisterAndLoginModel? model;
 
-  List<String> pathLoginList = ['Etudient', 'Ensiengnant', 'Responsable'];
-  String pathLogin = 'Etudient';
+  List<String> pathLoginList = ['Etudiant', 'Ensiengnant', 'Responsable'];
+  String pathLogin = 'Etudiant';
   void showPassword() {
     isvisibility = !isvisibility;
     emit(ShowPasswordState());
@@ -35,8 +35,8 @@ class LoginCubit extends Cubit<LoginState> {
       print('Dkhol');
       model = RegisterAndLoginModel.fromjson(value.data);
       print(model!.token);
-      pathLogin == 'Etudient'
-          ? emit(LoginEtudientStateGood(model!.token))
+      pathLogin == 'Etudiant'
+          ? emit(LoginEtudiantStateGood(model!.token))
           : pathLogin == 'Ensiengnant'
               ? emit(LoginEnsiengnantStateGood(model!.token))
               : pathLogin == "Responsable"

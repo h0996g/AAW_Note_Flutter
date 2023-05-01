@@ -1,51 +1,76 @@
-import 'package:affichage/models/reclamationModel.dart';
+import 'package:affichage/pages/Etudiant/ReclamationDetail.dart';
+import 'package:affichage/pages/Etudiant/addReclamation.dart';
+import 'package:affichage/pages/HomeEtudiant/HomeEtudiant.dart';
+import 'package:affichage/pages/HomeEtudiant/cubit/etudiant_cubit.dart';
+import 'package:affichage/pages/HomeEtudiant/cubit/etudiant_state.dart';
+import 'package:affichage/shared/components/components.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../shared/components/components.dart';
-import '../HomeResponsable/cubit/home_cubit.dart';
-import 'ReclamationDetail.dart';
+import '../../models/reclamationModel.dart';
 
 class Reclamation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return BlocConsumer<HomeCubit, HomeState>(
+    return BlocConsumer<EtudiantCubit, EtudiantState>(
       builder: (BuildContext context, state) {
-        return ConditionalBuilder(
-          builder: (BuildContext context) {
-            return Scaffold(
-              body: RefreshIndicator(
-                edgeOffset: 0,
-                onRefresh: () {
-                  HomeCubit.get(context).getAllReclamation();
-                  return Future.delayed(const Duration(seconds: 3));
-                },
-                child: ListView.builder(
-                    physics: const AlwaysScrollableScrollPhysics(
-                        parent: BouncingScrollPhysics()),
-                    itemBuilder: (context, index) => defaultReclamation(
-                        context,
-                        HomeCubit.get(context).reclamationModelList![index],
-                        index),
-                    itemCount:
-                        HomeCubit.get(context).reclamationModelList!.length),
-              ),
-            );
-          },
-          condition: HomeCubit.get(context).reclamationModelList != null &&
-              state is! LodinGetAllReclamationState,
-          fallback: (BuildContext context) {
-            return const Scaffold(
-              // drawer: Drawer(),
-
-              body: Center(child: CircularProgressIndicator()),
-            );
-          },
+        return Scaffold(
+          body: RefreshIndicator(
+            edgeOffset: 0,
+            onRefresh: () {
+              EtudiantCubit.get(context).getAllReclamationById();
+              return Future.delayed(const Duration(seconds: 3));
+            },
+            child: Column(
+              children: [
+                Expanded(
+                  child: ConditionalBuilder(
+                    builder: (BuildContext context) {
+                      return ListView.builder(
+                          physics: const AlwaysScrollableScrollPhysics(
+                              parent: BouncingScrollPhysics()),
+                          itemBuilder: (context, index) => defaultReclamation(
+                              context,
+                              EtudiantCubit.get(context)
+                                  .reclamationByIdModelList![index],
+                              index),
+                          itemCount: EtudiantCubit.get(context)
+                              .reclamationByIdModelList!
+                              .length);
+                    },
+                    condition:
+                        EtudiantCubit.get(context).reclamationByIdModelList !=
+                                null &&
+                            state is! LodinGetAllReclamationByIdState,
+                    fallback: (BuildContext context) {
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: defaultSubmit2(
+                    onPressed: () {
+                      navigatAndReturn(
+                          context: context, page: AddReclamation());
+                    },
+                    text: 'Add Reclamation',
+                  ),
+                ),
+              ],
+            ),
+          ),
         );
       },
-      listener: (BuildContext context, Object? state) {},
+      listener: (BuildContext context, Object? state) {
+        if (state is DeleteReclamationStateGood) {
+          showToast(msg: 'delete Successfuly', state: ToastStates.success);
+        }
+      },
     );
   }
 }
@@ -80,10 +105,8 @@ Widget defaultReclamation(context, ReclamationModel model, int index) => Card(
                           )),
                       TextButton(
                           onPressed: () {
-                            HomeCubit.get(context).deleteReclamation(
-                                id: HomeCubit.get(context)
-                                    .reclamationModelList![index]
-                                    .id!);
+                            EtudiantCubit.get(context)
+                                .deleteReclamation(id: model.id!);
                             Navigator.pop(context);
                           },
                           child: const Text(

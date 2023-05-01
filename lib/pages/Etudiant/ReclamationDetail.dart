@@ -1,10 +1,9 @@
+import 'package:affichage/pages/HomeEtudiant/cubit/etudiant_cubit.dart';
+import 'package:affichage/pages/HomeEtudiant/cubit/etudiant_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 
 import '../../shared/components/components.dart';
-import '../HomeResponsable/HomeResponsable.dart';
-import '../HomeResponsable/cubit/home_cubit.dart';
 
 class ReclamationDetails extends StatelessWidget {
   final int index;
@@ -13,39 +12,22 @@ class ReclamationDetails extends StatelessWidget {
   final commentController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    HomeCubit.get(context).isDone =
-        HomeCubit.get(context).reclamationModelList![index].done;
+    EtudiantCubit.get(context).isDone =
+        EtudiantCubit.get(context).reclamationByIdModelList![index].done;
 
-    return BlocConsumer<HomeCubit, HomeState>(
+    return BlocConsumer<EtudiantCubit, EtudiantState>(
       listener: (context, state) {
-        if (state is UpdateReclamationStateGood) {
-          showToast(msg: "Successfully", state: ToastStates.success);
-          navigatAndFinish(context: context, page: const HomeResponsable());
-        }
         // TODO: implement listener
       },
       builder: (context, state) {
         return Scaffold(
           appBar: defaultAppBar(
-              title: const Text('Detail'),
-              canreturn: true,
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              actions: [
-                TextButton(
-                    onPressed: () {
-                      HomeCubit.get(context).updatereclamation(
-                          isdone: HomeCubit.get(context).isDone!,
-                          id: HomeCubit.get(context)
-                              .reclamationModelList![index]
-                              .id);
-                    },
-                    child: const Text(
-                      'Submit',
-                      style: TextStyle(fontSize: 25),
-                    ))
-              ]),
+            title: const Text('Detail'),
+            canreturn: true,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
           body: Padding(
             padding: const EdgeInsets.all(20),
             child: SingleChildScrollView(
@@ -59,8 +41,8 @@ class ReclamationDetails extends StatelessWidget {
                         radius: 35,
                         backgroundImage: NetworkImage(
                             // 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9-6bTSqGzEDlxq6CbtlyAHvfr47PT5BpaGTi0nq4&s'
-                            HomeCubit.get(context)
-                                .reclamationModelList![index]
+                            EtudiantCubit.get(context)
+                                .reclamationByIdModelList![index]
                                 .data!
                                 .image!),
                       ),
@@ -73,8 +55,8 @@ class ReclamationDetails extends StatelessWidget {
                           Row(
                             children: [
                               Text(
-                                HomeCubit.get(context)
-                                    .reclamationModelList![index]
+                                EtudiantCubit.get(context)
+                                    .reclamationByIdModelList![index]
                                     .data!
                                     .name!,
                                 style: const TextStyle(fontSize: 20),
@@ -82,8 +64,8 @@ class ReclamationDetails extends StatelessWidget {
                             ],
                           ),
                           Text(
-                              HomeCubit.get(context)
-                                  .reclamationModelList![index]
+                              EtudiantCubit.get(context)
+                                  .reclamationByIdModelList![index]
                                   .data!
                                   .email!,
                               style: const TextStyle(fontSize: 20))
@@ -104,8 +86,8 @@ class ReclamationDetails extends StatelessWidget {
                         width: 40,
                       ),
                       Text(
-                        HomeCubit.get(context)
-                            .reclamationModelList![index]
+                        EtudiantCubit.get(context)
+                            .reclamationByIdModelList![index]
                             .createdAt!
                             .split('T')[0],
                         style:
@@ -116,15 +98,13 @@ class ReclamationDetails extends StatelessWidget {
                   const SizedBox(
                     height: 30,
                   ),
-                  const Text('Title :',
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.w500)),
-                  const SizedBox(
-                    height: 10,
+                  const Text(
+                    'Title :',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                   ),
                   Text(
-                      HomeCubit.get(context)
-                          .reclamationModelList![index]
+                      EtudiantCubit.get(context)
+                          .reclamationByIdModelList![index]
                           .title!,
                       style: const TextStyle(
                           fontSize: 19,
@@ -153,13 +133,10 @@ class ReclamationDetails extends StatelessWidget {
                             Align(
                               alignment: Alignment.topLeft,
                               child: Text(
-                                HomeCubit.get(context)
-                                    .reclamationModelList![index]
-                                    .text!,
-                                textAlign: TextAlign.start,
-                                style: const TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w400),
-                              ),
+                                  EtudiantCubit.get(context)
+                                      .reclamationByIdModelList![index]
+                                      .text!,
+                                  textAlign: TextAlign.start),
                             ),
                             const SizedBox(
                               height: 30,
@@ -185,7 +162,7 @@ class ReclamationDetails extends StatelessWidget {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
-                          HomeCubit.get(context).changeStateDone(true);
+                          // EtudiantCubit.get(context).changeStateDone(true);
                         },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
@@ -195,11 +172,11 @@ class ReclamationDetails extends StatelessWidget {
                               style: TextStyle(
                                   fontSize: 23,
                                   fontWeight: FontWeight.w500,
-                                  color: HomeCubit.get(context).isDone!
+                                  color: EtudiantCubit.get(context).isDone!
                                       ? Colors.green
                                       : Colors.black12),
                             ),
-                            if (HomeCubit.get(context).isDone!)
+                            if (EtudiantCubit.get(context).isDone!)
                               const CircleAvatar(
                                 backgroundColor: Colors.transparent,
                                 // minRadius: double.minPositive,
@@ -216,12 +193,12 @@ class ReclamationDetails extends StatelessWidget {
                         highlightColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onTap: () {
-                          HomeCubit.get(context).changeStateDone(false);
+                          // EtudiantCubit.get(context).changeStateDone(false);
                         },
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            if (!HomeCubit.get(context).isDone!)
+                            if (!EtudiantCubit.get(context).isDone!)
                               const CircleAvatar(
                                 backgroundImage:
                                     AssetImage('assets/images/cancel.png'),
@@ -231,7 +208,7 @@ class ReclamationDetails extends StatelessWidget {
                               style: TextStyle(
                                   fontSize: 23,
                                   fontWeight: FontWeight.w500,
-                                  color: !HomeCubit.get(context).isDone!
+                                  color: !EtudiantCubit.get(context).isDone!
                                       ? Colors.red
                                       : Colors.black12),
                             ),
@@ -243,7 +220,7 @@ class ReclamationDetails extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  HomeCubit.get(context).iswriteComment
+                  EtudiantCubit.get(context).iswriteComment
                       ? Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -273,7 +250,7 @@ class ReclamationDetails extends StatelessWidget {
                                 ),
                                 TextButton(
                                     onPressed: () {
-                                      HomeCubit.get(context)
+                                      EtudiantCubit.get(context)
                                           .writeComment(false);
                                     },
                                     child: const Text('Cancel'))
@@ -285,7 +262,7 @@ class ReclamationDetails extends StatelessWidget {
                           text: 'Add Comment',
                           background: Colors.grey,
                           onPressed: () {
-                            HomeCubit.get(context).writeComment(true);
+                            EtudiantCubit.get(context).writeComment(true);
                           }),
                   ListView.builder(
                     shrinkWrap: true,

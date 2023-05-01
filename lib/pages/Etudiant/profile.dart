@@ -1,23 +1,21 @@
+import 'package:affichage/models/oo.dart';
+import 'package:affichage/pages/HomeEtudiant/cubit/etudiant_cubit.dart';
+import 'package:affichage/pages/HomeEtudiant/cubit/etudiant_state.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../shared/components/components.dart';
 import '../../shared/helper/cashHelper.dart';
 import '../Auth/login/login.dart';
-import '../HomeResponsable/cubit/home_cubit.dart';
-import 'UpdateResponsableForm.dart';
 
-class ProfileResponsable extends StatelessWidget {
-  const ProfileResponsable({super.key});
+class ProfileEtudiant extends StatelessWidget {
+  const ProfileEtudiant({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // print(model.id);
-    // HomeCubit.get(context).getUserDetail(id: model.id.toString());
     Size size = MediaQuery.of(context).size;
-    return (BlocConsumer<HomeCubit, HomeState>(
+    return (BlocConsumer<EtudiantCubit, EtudiantState>(
       listener: (context, state) {
         // TODO: implement listener
         // if (state is DeleteUserStateGood) {
@@ -38,62 +36,51 @@ class ProfileResponsable extends StatelessWidget {
                 return SizedBox(
                   height:
                       size.height - defaultAppBar().preferredSize.height * 2.5,
-                  // padding: EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       CircleAvatar(
                         backgroundColor: Colors.transparent,
                         radius: 80.0,
-                        backgroundImage: NetworkImage(
-                            HomeCubit.get(context).responsableModel!.image!),
+                        backgroundImage: NetworkImage(EtudiantCubit.get(context)
+                            .etudiantModel!
+                            .data!
+                            .image!),
                       ),
                       const SizedBox(height: 16.0),
                       Text(
-                        HomeCubit.get(context).responsableModel!.name!,
+                        EtudiantCubit.get(context).etudiantModel!.data!.name!,
                         style: const TextStyle(
                           fontSize: 24.0,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 8.0),
-                      // Text(
-                      //   'Software Developer',
-                      //   style: TextStyle(fontSize: 16.0),
-                      // ),
-                      // SizedBox(height: 16.0),
+
                       const Divider(),
                       ListTile(
                         leading: const Icon(Icons.email),
                         title: const Text('Email'),
-                        subtitle: Text(
-                            HomeCubit.get(context).responsableModel!.email!),
+                        subtitle: Text(EtudiantCubit.get(context)
+                            .etudiantModel!
+                            .data!
+                            .email!),
                         onTap: () {},
                       ),
                       ListTile(
                         leading: const Icon(Icons.phone),
                         title: const Text('Phone'),
-                        subtitle: Text(
-                            HomeCubit.get(context).responsableModel!.phone!),
+                        subtitle: Text(EtudiantCubit.get(context)
+                            .etudiantModel!
+                            .data!
+                            .phone!),
                         onTap: () {},
                       ),
 
                       const SizedBox(height: 8.0),
-                      // ElevatedButton(
-                      //   onPressed: () {
-                      //     navigatAndReturn(
-                      //         context: context, page: UpdateUserForm());
-                      //   },
-                      //   child: Text('Edit Profile'),
-                      // ),
+
                       const Spacer(),
-                      ElevatedButton(
-                        onPressed: () {
-                          navigatAndReturn(
-                              context: context, page: UpdateResponsableForm());
-                        },
-                        child: const Text('Edit Profile'),
-                      ),
+
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 70, vertical: 40),
@@ -107,7 +94,8 @@ class ProfileResponsable extends StatelessWidget {
                                 // _homeCubit.resetWhenLogout();
                                 navigatAndFinish(
                                     context: context, page: Login());
-                                HomeCubit.get(context).resetValueWhenelogout();
+                                EtudiantCubit.get(context)
+                                    .resetValueWhenelogout();
                               });
                             }),
                       ),
@@ -156,7 +144,7 @@ class ProfileResponsable extends StatelessWidget {
                   ),
                 );
               },
-              condition: state is! LodinGetCurrentResponsableDetailState,
+              condition: state is! LodinGetCurrentEtudiantDetailState,
               //  && state is! LodinDeleteUserState,
               fallback: (BuildContext context) {
                 return SizedBox(

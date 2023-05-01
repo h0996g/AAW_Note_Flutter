@@ -38,6 +38,7 @@ class HomeCubit extends Cubit<HomeState> {
     'Etudiants',
     'Profile',
   ];
+
   void changeStateDone(bool state) {
     isDone = state;
     emit(ChangeStatDoneStateGood());

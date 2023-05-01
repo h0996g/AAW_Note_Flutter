@@ -1,3 +1,5 @@
+import 'package:affichage/pages/HomeEtudiant/HomeEtudiant.dart';
+import 'package:affichage/pages/HomeEtudiant/cubit/etudiant_cubit.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 
@@ -142,14 +144,6 @@ class Login extends StatelessWidget {
                         )
                       ],
                     ),
-                    Center(
-                      child: TextButton(
-                        child: const Text('Register Now '),
-                        onPressed: () {
-                          navigatAndReturn(context: context, page: Register());
-                        },
-                      ),
-                    ),
                   ],
                 ),
               ),
@@ -161,7 +155,11 @@ class Login extends StatelessWidget {
         if (state is LoginResponsableStateGood) {
           showToast(msg: "Logged in Successfully", state: ToastStates.success);
           // sleep(const Duration(seconds: 1));
-          CachHelper.putcache(key: "token", value: state.token).then((value) {
+          CachHelper.putcache(key: "token", value: state.token)
+              .then((value) async {
+            await CachHelper.putcache(
+                key: "loginType", value: LoginCubit.get(context).pathLogin);
+            // print(LoginCubit.get(context).pathLogin);
             print(value.toString());
             TOKEN = CachHelper.getData(key: 'token');
             DECODEDTOKEN = JwtDecoder.decode(state.token);
@@ -172,6 +170,25 @@ class Login extends StatelessWidget {
           });
           navigatAndFinish(context: context, page: const HomeResponsable());
         } else if (state is LoginResponsableStateBad) {
+          showToast(msg: 'Something Went Wrong', state: ToastStates.error);
+        } else if (state is LoginEtudiantStateGood) {
+          showToast(msg: "Logged in Successfully", state: ToastStates.success);
+          // sleep(const Duration(seconds: 1));
+          CachHelper.putcache(key: "token", value: state.token)
+              .then((value) async {
+            await CachHelper.putcache(
+                key: "loginType", value: LoginCubit.get(context).pathLogin);
+            print(value.toString());
+            TOKEN = CachHelper.getData(key: 'token');
+            DECODEDTOKEN = JwtDecoder.decode(state.token);
+            print(DECODEDTOKEN['_id']);
+            EtudiantCubit.get(context).getCurrentEtudiantInfo();
+            EtudiantCubit.get(context).getAllReclamationById();
+            // HomeCubit.get(context).getEtudiants();
+            // HomeCubit.get(context).getAllReclamation();
+          });
+          navigatAndFinish(context: context, page: const HomeEtudiant());
+        } else if (state is LoginEtudientStateBad) {
           showToast(msg: 'Something Went Wrong', state: ToastStates.error);
         }
       },

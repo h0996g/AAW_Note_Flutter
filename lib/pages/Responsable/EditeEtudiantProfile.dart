@@ -79,7 +79,7 @@ class _EditeEtudiantProfileState extends State<EditeEtudiantProfile> {
       builder: (context, state) {
         return WillPopScope(
           onWillPop: () async {
-            if (state is LodinUpdateUserNoteState) {
+            if (state is LodinUpdateUserState) {
               return false;
             }
             HomeCubit.get(context).resetValueWheneUpdate();
