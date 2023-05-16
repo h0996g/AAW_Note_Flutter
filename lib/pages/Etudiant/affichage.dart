@@ -16,19 +16,40 @@ class _AffichageState extends State<Affichage> {
     data = [
       {
         'module': 'math',
-        'note': EtudiantCubit.get(context).etudiantModel!.math.toString()
+        'controle':
+            EtudiantCubit.get(context).etudiantModel!.math!.controle.toString(),
+        'intero':
+            EtudiantCubit.get(context).etudiantModel!.math!.intero.toString(),
+        'moy': EtudiantCubit.get(context).etudiantModel!.math!.moy.toString(),
       },
       {
         'module': 'Algo',
-        'note': EtudiantCubit.get(context).etudiantModel!.algo.toString()
+        'moy': EtudiantCubit.get(context).etudiantModel!.algo!.moy.toString(),
+        'intero':
+            EtudiantCubit.get(context).etudiantModel!.algo!.intero.toString(),
+        'controle':
+            EtudiantCubit.get(context).etudiantModel!.algo!.controle.toString(),
       },
       {
         'module': 'physique',
-        'note': EtudiantCubit.get(context).etudiantModel!.physique.toString()
+        'moy':
+            EtudiantCubit.get(context).etudiantModel!.physique!.moy.toString(),
+        'intero': EtudiantCubit.get(context)
+            .etudiantModel!
+            .physique!
+            .intero
+            .toString(),
+        'controle': EtudiantCubit.get(context)
+            .etudiantModel!
+            .physique!
+            .controle
+            .toString(),
       },
       {
-        'module': 'moy',
-        'note': EtudiantCubit.get(context).etudiantModel!.moy.toString()
+        'module': 'moy General',
+        'moy': EtudiantCubit.get(context).etudiantModel!.moy.toString(),
+        'intero': '',
+        'controle': '',
       },
     ];
 
@@ -48,12 +69,16 @@ class _AffichageState extends State<Affichage> {
         border: TableBorder.all(),
         columns: const [
           DataColumn(label: Text('Module')),
-          DataColumn(label: Text('note')),
+          DataColumn(label: Text('intero')),
+          DataColumn(label: Text('controle')),
+          DataColumn(label: Text('moy')),
         ],
         rows: data!
             .map((item) => DataRow(cells: [
                   DataCell(Text(item['module'])),
-                  DataCell(Text(item['note'].toString())),
+                  DataCell(Text(item['intero'].toString())),
+                  DataCell(Text(item['controle'].toString())),
+                  DataCell(Text(item['moy'].toString())),
                 ]))
             .toList(),
       ),

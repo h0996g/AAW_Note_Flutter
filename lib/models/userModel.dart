@@ -1,10 +1,10 @@
 class UserModel {
-  String? id;
-  String? name;
-  String? email;
-  String? password;
-  String? phone;
-  String? image;
+  var id;
+  var name;
+  var email;
+  var password;
+  var phone;
+  var image;
   UserModel(
       {this.id, this.name, this.email, this.password, this.phone, this.image});
   UserModel.fromJson(Map<String?, dynamic> json) {

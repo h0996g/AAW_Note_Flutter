@@ -128,3 +128,5 @@ class UpdateReclamationStateBad extends HomeState {
 
   UpdateReclamationStateBad(this.err);
 }
+
+class ChangeVisibilityState extends HomeState {}

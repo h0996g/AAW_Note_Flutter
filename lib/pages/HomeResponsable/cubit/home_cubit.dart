@@ -54,6 +54,9 @@ class HomeCubit extends Cubit<HomeState> {
   void resetValueWheneUpdate() {
     imageCompress = null;
     linkProfileImg = null;
+    mathVisibility = false;
+    physiqueVisibility = false;
+    algoVisibility = false;
   }
 
   void resetValueWheneSeeDetailEtudiant() {
@@ -213,9 +216,6 @@ class HomeCubit extends Cubit<HomeState> {
     required String id,
     required String name,
     required String email,
-    String math = '',
-    String physique = '',
-    String algo = '',
   }) async {
     emit(LodinUpdateUserState());
 
@@ -239,12 +239,13 @@ class HomeCubit extends Cubit<HomeState> {
       print(value.data);
       await getEtudiantDetail(id: id);
 
-      await updateEtudiantNote(
-        algo: algo,
-        id: id,
-        math: math,
-        physique: physique,
-      );
+      // await updateEtudiantNote(
+      //   algo: algo,
+      //   id: id,
+      //   math: math,
+      //   physique: physique,
+      // );
+
       // getCurrentResponsableInfo();
       emit(UpdateUserStateGood());
     }).catchError((e) {
@@ -256,24 +257,15 @@ class HomeCubit extends Cubit<HomeState> {
 // updateEtudiantNote
   Future<void> updateEtudiantNote({
     required String id,
-    // required String name,
-    // required String email,
-    required String math,
-    required String algo,
-    required String physique,
+    required String module,
+    required String intero,
+    required String controle,
   }) async {
     emit(LodinUpdateUserNoteState());
 
-    EtudientDetailsWithNote _modelEtudient = EtudientDetailsWithNote(
-      algo: algo,
-      math: math,
-      physique: physique,
-    ); //! bh nbdl Note
-
     await DioHelper.putData(
-            url: UPDATEETUDIANTWITHRESPONSABLE + id.toString(),
-            data: _modelEtudient.toMap())
-        .then((value) async {
+        url: UPDATEMODULE + id.toString() + module,
+        data: {'intero': intero, 'controle': controle}).then((value) async {
       print('badalt note Etudiant');
       await getEtudiantDetail(id: id);
       emit(UpdateUserNoteStateGood());
@@ -281,6 +273,30 @@ class HomeCubit extends Cubit<HomeState> {
       print(e.toString());
       emit(UpdateUserNoteStateBad(e.toString()));
     });
+  }
+
+  bool mathVisibility = false;
+  bool physiqueVisibility = false;
+  bool algoVisibility = false;
+  void mathchangeVisibility() {
+    physiqueVisibility = false;
+    algoVisibility = false;
+    mathVisibility = !mathVisibility;
+    emit(ChangeVisibilityState());
+  }
+
+  void physiquechangeVisibility() {
+    mathVisibility = false;
+    algoVisibility = false;
+    physiqueVisibility = !physiqueVisibility;
+    emit(ChangeVisibilityState());
+  }
+
+  void algochangeVisibility() {
+    mathVisibility = false;
+    physiqueVisibility = false;
+    algoVisibility = !algoVisibility;
+    emit(ChangeVisibilityState());
   }
 
   Future<void> getAllReclamation() async {

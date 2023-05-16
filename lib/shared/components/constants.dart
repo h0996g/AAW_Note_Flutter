@@ -3,19 +3,21 @@ Map<String, dynamic> DECODEDTOKEN = {};
 // const URLHTTP = '192.168.87.68:3000';
 var LOGINTYPE = '';
 
-const GETAllETUDIANTS = '/AllEtudiants';
-const GETALLRECLAMATION = '/AllReclamation';
-const GETALLRECLAMATIONBYID = '/AllReclamationById/';
-const GETRESPONSABLEDETAIL = 'GETRESPONSABLEDETAIL/';
-const UPDATERESPONSABLE = '/updateResponsable/';
-const UPDATERECLAMATION = '/updateReclamation/';
+const GETAllETUDIANTS = '/students';
+const GETALLRECLAMATION = '/reclamations';
+const GETALLRECLAMATIONBYID = '/reclamations/';
+const GETRESPONSABLEDETAIL = 'responsibles/';
+const UPDATERESPONSABLE = '/responsibles/';
+const UPDATERECLAMATION = '/reclamations/';
 
-const UPDATEETUDIANTWITHRESPONSABLE = '/updateEtudiantWtithResponsable/';
+const UPDATEETUDIANTWITHRESPONSABLE = '/students/';
 
-const GETUSERDETAIL = '/getEtudiantInfo/';
-const REGISTERETUDIANT = '/registerEtudient';
-const ADDRECLAMATION = '/addReclamation';
+const GETUSERDETAIL = '/pvs/';
+const REGISTERETUDIANT = '/studients';
+const ADDRECLAMATION = '/reclamations';
 const LOGIN = '/login';
-const DELETEETUDIENT = '/deleteEtudiant/';
-const DELETERECLAMATION = '/deleteReclamation/';
-const UPDATEUSER = '/updateuser/';
+const DELETEETUDIENT = '/students/';
+const DELETERECLAMATION = '/reclamations/';
+const UPDATEUSER = '/students/';
+
+const UPDATEMODULE = '/modules/';

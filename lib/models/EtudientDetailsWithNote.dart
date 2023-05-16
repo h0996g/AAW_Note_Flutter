@@ -1,14 +1,15 @@
+import 'package:affichage/models/module.dart';
 import 'package:affichage/models/userModel.dart';
 
 class EtudientDetailsWithNote {
   // bool? status;
 
   // !mb3d nrghom double
-  var math;
-  var physique;
-  var algo;
+  Module? math;
+  Module? physique;
+  Module? algo;
   var moy;
-  String? id;
+  var id;
 
   UserModel? data;
 
@@ -24,9 +25,9 @@ class EtudientDetailsWithNote {
   });
   EtudientDetailsWithNote.fromJson(Map<String, dynamic> json) {
     // status = json['status'];
-    math = json['math'];
-    physique = json['physique'];
-    algo = json['algo'];
+    math = Module.fromJson(json['math']);
+    physique = Module.fromJson(json['physique']);
+    algo = Module.fromJson(json['algo']);
     id = json['_id'];
     moy = json['moy'];
     data =

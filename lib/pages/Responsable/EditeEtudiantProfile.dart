@@ -20,21 +20,30 @@ class EditeEtudiantProfile extends StatefulWidget {
 class _EditeEtudiantProfileState extends State<EditeEtudiantProfile> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
-  final TextEditingController _mathController = TextEditingController();
-  final TextEditingController _physiqueController = TextEditingController();
-  final TextEditingController _algoController = TextEditingController();
+  final TextEditingController _imathController = TextEditingController();
+  final TextEditingController _cmathController = TextEditingController();
+  final TextEditingController _iphysiqueController = TextEditingController();
+  final TextEditingController _cphysiqueController = TextEditingController();
+  final TextEditingController _ialgoController = TextEditingController();
+  final TextEditingController _calgoController = TextEditingController();
   final formkey = GlobalKey<FormState>();
   @override
   void initState() {
     // TODO: implement setState
     _emailController.text = HomeCubit.get(context).etudiantModel!.data!.email!;
     _nameController.text = HomeCubit.get(context).etudiantModel!.data!.name!;
-    _mathController.text =
-        HomeCubit.get(context).etudiantModel!.math.toString();
-    _physiqueController.text =
-        HomeCubit.get(context).etudiantModel!.physique.toString();
-    _algoController.text =
-        HomeCubit.get(context).etudiantModel!.algo.toString();
+    _imathController.text =
+        HomeCubit.get(context).etudiantModel!.math!.intero.toString();
+    _cmathController.text =
+        HomeCubit.get(context).etudiantModel!.math!.controle.toString();
+    _iphysiqueController.text =
+        HomeCubit.get(context).etudiantModel!.physique!.intero.toString();
+    _cphysiqueController.text =
+        HomeCubit.get(context).etudiantModel!.physique!.controle.toString();
+    _ialgoController.text =
+        HomeCubit.get(context).etudiantModel!.algo!.intero.toString();
+    _calgoController.text =
+        HomeCubit.get(context).etudiantModel!.algo!.controle.toString();
     super.initState();
   }
 
@@ -67,6 +76,11 @@ class _EditeEtudiantProfileState extends State<EditeEtudiantProfile> {
               page: EtudiantProfile(
                   model: HomeCubit.get(context).etudiantModel!.data!));
         }
+        if (state is UpdateUserNoteStateGood) {
+          showToast(
+              msg: 'Note Updated Successfully', state: ToastStates.success);
+          HomeCubit.get(context).resetValueWheneUpdate();
+        }
         // if (state is DeleteUserStateGood) {
         //   showToast(msg: 'Delete Successfully', state: ToastStates.success);
         //   CachHelper.removdata(key: "token").then((value) {
@@ -83,8 +97,11 @@ class _EditeEtudiantProfileState extends State<EditeEtudiantProfile> {
               return false;
             }
             HomeCubit.get(context).resetValueWheneUpdate();
-
-            return true;
+            navigatAndFinish(
+                context: context,
+                page: EtudiantProfile(
+                    model: HomeCubit.get(context).etudiantModel!.data!));
+            return false;
           },
           child: Scaffold(
             appBar: defaultAppBar(
@@ -98,14 +115,15 @@ class _EditeEtudiantProfileState extends State<EditeEtudiantProfile> {
                   HomeCubit.get(context).resetValueWheneUpdate();
                 }),
             body: Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: EdgeInsets.all(10.0),
               child: Form(
                 key: formkey,
-                child: SingleChildScrollView(
-                  child: SizedBox(
-                    height: size.height -
-                        defaultAppBar().preferredSize.height * 2.5,
+                child: SizedBox(
+                  height:
+                      size.height - defaultAppBar().preferredSize.height * 2.5,
+                  child: SingleChildScrollView(
                     child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         //
                         // crossAxisAlignment: CrossAxisAlignment.stretch,
                         // crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -120,71 +138,80 @@ class _EditeEtudiantProfileState extends State<EditeEtudiantProfile> {
                                 )
                               ],
                             ),
-                          Stack(
-                            alignment: AlignmentDirectional.bottomEnd,
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: Colors.transparent,
-                                backgroundImage:
-                                    HomeCubit.get(context).imageCompress != null
-                                        ? Image.file(HomeCubit.get(context)
-                                                .imageCompress!)
-                                            .image
-                                        : NetworkImage(HomeCubit.get(context)
-                                            .etudiantModel!
-                                            .data!
-                                            .image!),
-                                radius: 60,
-                              ),
-                              IconButton(
-                                splashRadius: double.minPositive,
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                            title: const Text(
-                                                "Choose the source :"),
-                                            actions: [
-                                              TextButton(
-                                                  onPressed: () async {
-                                                    if (state
-                                                        is LodinUpdateUserNoteState) {
-                                                      return;
-                                                    }
-                                                    await HomeCubit.get(context)
-                                                        .imagePickerProfile(
-                                                            ImageSource.camera)
-                                                        .then((value) {
-                                                      Navigator.pop(context);
-                                                    });
-                                                  },
-                                                  child: const Text("Camera")),
-                                              TextButton(
-                                                  onPressed: () async {
-                                                    if (state
-                                                        is LodinUpdateUserNoteState) {
-                                                      return;
-                                                    }
-                                                    await HomeCubit.get(context)
-                                                        .imagePickerProfile(
-                                                            ImageSource.gallery)
-                                                        .then((value) {
-                                                      Navigator.pop(context);
-                                                    });
-                                                  },
-                                                  child: const Text("Gallery"))
-                                            ],
-                                          ));
-                                },
-                                icon: const CircleAvatar(
-                                  child: Icon(
-                                    Icons.camera,
-                                    color: Colors.white,
-                                    size: 25,
-                                  ),
+                          Center(
+                            child: Stack(
+                              alignment: AlignmentDirectional.bottomEnd,
+                              children: [
+                                CircleAvatar(
+                                  backgroundColor: Colors.transparent,
+                                  backgroundImage:
+                                      HomeCubit.get(context).imageCompress !=
+                                              null
+                                          ? Image.file(HomeCubit.get(context)
+                                                  .imageCompress!)
+                                              .image
+                                          : NetworkImage(HomeCubit.get(context)
+                                              .etudiantModel!
+                                              .data!
+                                              .image!),
+                                  radius: 60,
                                 ),
-                              )
-                            ],
+                                IconButton(
+                                  splashRadius: double.minPositive,
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) => AlertDialog(
+                                              title: const Text(
+                                                  "Choose the source :"),
+                                              actions: [
+                                                TextButton(
+                                                    onPressed: () async {
+                                                      if (state
+                                                          is LodinUpdateUserNoteState) {
+                                                        return;
+                                                      }
+                                                      await HomeCubit.get(
+                                                              context)
+                                                          .imagePickerProfile(
+                                                              ImageSource
+                                                                  .camera)
+                                                          .then((value) {
+                                                        Navigator.pop(context);
+                                                      });
+                                                    },
+                                                    child:
+                                                        const Text("Camera")),
+                                                TextButton(
+                                                    onPressed: () async {
+                                                      if (state
+                                                          is LodinUpdateUserNoteState) {
+                                                        return;
+                                                      }
+                                                      await HomeCubit.get(
+                                                              context)
+                                                          .imagePickerProfile(
+                                                              ImageSource
+                                                                  .gallery)
+                                                          .then((value) {
+                                                        Navigator.pop(context);
+                                                      });
+                                                    },
+                                                    child:
+                                                        const Text("Gallery"))
+                                              ],
+                                            ));
+                                  },
+                                  icon: const CircleAvatar(
+                                    child: Icon(
+                                      Icons.camera,
+                                      color: Colors.white,
+                                      size: 25,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
                           ),
                           const SizedBox(
                             height: 30,
@@ -216,52 +243,262 @@ class _EditeEtudiantProfileState extends State<EditeEtudiantProfile> {
                           const SizedBox(
                             height: 20,
                           ),
-                          defaultForm(
-                              controller: _mathController,
-                              textInputAction: TextInputAction.next,
-                              label: 'Math',
-                              prefixIcon: const Icon(Icons.calculate_outlined),
-                              type: TextInputType.number,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "Note Must Be Not Empty";
-                                }
-                              }),
+                          Row(
+                            children: [
+                              TextButton(
+                                onPressed: () {
+                                  HomeCubit.get(context).mathchangeVisibility();
+                                },
+                                child: const Text(
+                                  'Math ',
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black54),
+                                ),
+                              ),
+                              const Spacer(),
+                              Visibility(
+                                visible: HomeCubit.get(context).mathVisibility,
+                                child: TextButton(
+                                  onPressed: () {
+                                    HomeCubit.get(context)
+                                        .updateEtudiantNote(
+                                            module: '/math',
+                                            id: HomeCubit.get(context)
+                                                .etudiantModel!
+                                                .data!
+                                                .id!,
+                                            intero: _imathController.text,
+                                            controle: _cmathController.text)
+                                        .then((value) {
+                                      HomeCubit.get(context)
+                                          .mathchangeVisibility();
+                                    });
+                                  },
+                                  child: const Text(
+                                    'update',
+                                    style: TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.w500,
+                                        color: Colors.blue),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Visibility(
+                            visible: HomeCubit.get(context).mathVisibility,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: defaultForm(
+                                      controller: _imathController,
+                                      textInputAction: TextInputAction.next,
+                                      label: 'Intero',
+                                      prefixIcon:
+                                          const Icon(Icons.calculate_outlined),
+                                      type: TextInputType.number,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Note Must Be Not Empty";
+                                        }
+                                      }),
+                                ),
+                                Expanded(
+                                  child: defaultForm(
+                                      controller: _cmathController,
+                                      textInputAction: TextInputAction.next,
+                                      label: 'Controle',
+                                      prefixIcon:
+                                          const Icon(Icons.calculate_outlined),
+                                      type: TextInputType.number,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Note Must Be Not Empty";
+                                        }
+                                      }),
+                                ),
+                              ],
+                            ),
+                          ),
                           const SizedBox(
                             height: 20,
                           ),
-                          defaultForm(
-                              controller: _physiqueController,
-                              textInputAction: TextInputAction.next,
-                              label: 'Physique',
-                              prefixIcon: const Icon(Icons.calculate_outlined),
-                              type: TextInputType.number,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "Note Must Be Not Empty";
-                                }
-                              }),
+                          Row(
+                            children: [
+                              TextButton(
+                                onPressed: () {
+                                  HomeCubit.get(context).algochangeVisibility();
+                                },
+                                child: const Text(
+                                  'Algo ',
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black54),
+                                ),
+                              ),
+                              Spacer(),
+                              Visibility(
+                                visible: HomeCubit.get(context).algoVisibility,
+                                child: TextButton(
+                                    onPressed: () {
+                                      HomeCubit.get(context)
+                                          .updateEtudiantNote(
+                                              module: '/algo',
+                                              id: HomeCubit.get(context)
+                                                  .etudiantModel!
+                                                  .data!
+                                                  .id!,
+                                              intero: _ialgoController.text,
+                                              controle: _calgoController.text)
+                                          .then((value) {
+                                        HomeCubit.get(context)
+                                            .algochangeVisibility();
+                                      });
+                                    },
+                                    child: const Text('update',
+                                        style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.blue))),
+                              )
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Visibility(
+                            visible: HomeCubit.get(context).algoVisibility,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: defaultForm(
+                                      controller: _ialgoController,
+                                      textInputAction: TextInputAction.next,
+                                      label: 'Intero',
+                                      prefixIcon:
+                                          const Icon(Icons.calculate_outlined),
+                                      type: TextInputType.number,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Note Must Be Not Empty";
+                                        }
+                                      }),
+                                ),
+                                Expanded(
+                                  child: defaultForm(
+                                      controller: _calgoController,
+                                      textInputAction: TextInputAction.next,
+                                      label: 'Controle',
+                                      prefixIcon:
+                                          const Icon(Icons.calculate_outlined),
+                                      type: TextInputType.number,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Note Must Be Not Empty";
+                                        }
+                                      }),
+                                ),
+                              ],
+                            ),
+                          ),
                           const SizedBox(
                             height: 20,
                           ),
-                          defaultForm(
-                              controller: _algoController,
-                              textInputAction: TextInputAction.next,
-                              label: 'Algo',
-                              prefixIcon: const Icon(Icons.calculate_outlined),
-                              type: TextInputType.number,
-                              validator: (value) {
-                                if (value!.isEmpty) {
-                                  return "Note Must Be Not Empty";
-                                }
-                              }),
-                          SizedBox(
-                            height: size.height * 0.1,
+                          Row(
+                            children: [
+                              TextButton(
+                                onPressed: () {
+                                  HomeCubit.get(context)
+                                      .physiquechangeVisibility();
+                                },
+                                child: const Text(
+                                  'Physique ',
+                                  style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black54),
+                                ),
+                              ),
+                              Spacer(),
+                              Visibility(
+                                visible:
+                                    HomeCubit.get(context).physiqueVisibility,
+                                child: TextButton(
+                                    onPressed: () {
+                                      HomeCubit.get(context)
+                                          .updateEtudiantNote(
+                                              module: '/physique',
+                                              id: HomeCubit.get(context)
+                                                  .etudiantModel!
+                                                  .data!
+                                                  .id!,
+                                              intero: _iphysiqueController.text,
+                                              controle:
+                                                  _cphysiqueController.text)
+                                          .then((value) {
+                                        HomeCubit.get(context)
+                                            .mathchangeVisibility();
+                                      });
+                                    },
+                                    child: const Text('update',
+                                        style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.blue))),
+                              )
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                          ),
+                          Visibility(
+                            visible: HomeCubit.get(context).physiqueVisibility,
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: defaultForm(
+                                      controller: _iphysiqueController,
+                                      textInputAction: TextInputAction.next,
+                                      label: 'Intero',
+                                      prefixIcon:
+                                          const Icon(Icons.calculate_outlined),
+                                      type: TextInputType.number,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Note Must Be Not Empty";
+                                        }
+                                      }),
+                                ),
+                                Expanded(
+                                  child: defaultForm(
+                                      controller: _cphysiqueController,
+                                      textInputAction: TextInputAction.next,
+                                      label: 'Controle',
+                                      prefixIcon:
+                                          const Icon(Icons.calculate_outlined),
+                                      type: TextInputType.number,
+                                      validator: (value) {
+                                        if (value!.isEmpty) {
+                                          return "Note Must Be Not Empty";
+                                        }
+                                      }),
+                                ),
+                              ],
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 20,
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: defaultSubmit2(
-                                text: 'Update',
+                                text: 'Update info',
                                 background: Colors.grey,
                                 onPressed: () {
                                   if (formkey.currentState!.validate()) {
@@ -270,11 +507,8 @@ class _EditeEtudiantProfileState extends State<EditeEtudiantProfile> {
                                     }
                                     HomeCubit.get(context)
                                         .updateEtudiantResponsable(
-                                            algo: _algoController.text,
                                             email: _emailController.text,
-                                            math: _mathController.text,
                                             name: _nameController.text,
-                                            physique: _physiqueController.text,
                                             id: HomeCubit.get(context)
                                                 .etudiantModel!
                                                 .data!
